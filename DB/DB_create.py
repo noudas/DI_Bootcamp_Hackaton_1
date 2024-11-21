@@ -3,7 +3,6 @@ from psycopg2 import sql
 from config import Config
 from DB_connnect import db_connect
 
-
 def db_create(new_db_name):
     """
     Creates a new PostgreSQL database.
@@ -16,16 +15,19 @@ def db_create(new_db_name):
         if connection is None:
             print("Failed to connect to the default database.")
             return
-        
+
+        # Enable autocommit to execute CREATE DATABASE
+        # The connection.commit() didn`t work so this is the workaround that i managed to find.... 
+        # although i don`t like ti since it feels less secure that specifying where i wanted
+        connection.set_session(autocommit=True)
+
         cursor = connection.cursor()
-        # sql.SQL will make it harder to inject code into the DB
-        create_db_query =sql.SQL("CREATE DATABASE {db_name}").format(
-            # This will create an identifier to make it more private
-            db_name = sql.Identifier(new_db_name)
+        # Use sql.SQL to safely construct the query
+        create_db_query = sql.SQL("CREATE DATABASE {db_name}").format(
+            db_name=sql.Identifier(new_db_name)
         )
 
         cursor.execute(create_db_query)
-        connection.commit()
         print(f"Database '{new_db_name}' created successfully!")
 
     except Exception as error:
