@@ -14,8 +14,7 @@ def test_config():
     print(f"DB_HOST: {Config.DB_HOST}")
     print(f"DB_PORT: {Config.DB_PORT}")
 
-
-def test_connect():
+def test__db__default_connect():
     """
     Test to check if the database connection works with the default database.
     """
@@ -38,6 +37,6 @@ def test_db_creation():
 if __name__ == "__main__":
     print("Starting tests...\n")
     test_config()
-    test_connect()
+    test__db__default_connect()
     test_db_creation()
     print("\nAll tests completed.")
