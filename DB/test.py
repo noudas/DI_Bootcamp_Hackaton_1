@@ -2,6 +2,8 @@ from config import Config
 from DB_config.DB_create import db_create
 from DB_config.DB_connect import db_connect
 from DB_tables.DB_user_table import create_table_users
+from DB_tables.DB_categories_table import create_table_categories
+from DB_tables.DB_expenses_table import create_table_expenses
 
 def test_config():
     """
@@ -41,6 +43,8 @@ def test_db_create_tables():
     """
     print("\nTesting tables creation...")
     create_table_users()
+    create_table_categories()
+    create_table_expenses()
 
 if __name__ == "__main__":
     print("Starting tests...\n")
