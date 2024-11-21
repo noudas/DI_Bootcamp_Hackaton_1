@@ -1,6 +1,6 @@
 from config import Config
-from DB_create import db_create
-from DB_connnect import db_connect
+from DB_config.DB_create import db_create
+from DB_config.DB_connnect import db_connect
 
 def test_config():
     """
