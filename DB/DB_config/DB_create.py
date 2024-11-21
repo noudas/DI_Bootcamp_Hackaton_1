@@ -1,7 +1,7 @@
 import psycopg2
 from psycopg2 import sql
 from config import Config
-from DB_connnect import db_connect
+from DB_config.DB_connect import db_connect
 
 def db_create(new_db_name):
     """

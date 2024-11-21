@@ -1,6 +1,7 @@
 from config import Config
 from DB_config.DB_create import db_create
-from DB_config.DB_connnect import db_connect
+from DB_config.DB_connect import db_connect
+from DB_tables.DB_user_table import create_table_users
 
 def test_config():
     """
@@ -34,9 +35,17 @@ def test_db_creation():
     print("\nTesting database creation...")
     db_create(test_db_name)
 
+def test_db_create_tables():
+    """
+    Test to check if a all the tables can be created.
+    """
+    print("\nTesting tables creation...")
+    create_table_users()
+
 if __name__ == "__main__":
     print("Starting tests...\n")
     test_config()
     test__db__default_connect()
     test_db_creation()
+    test_db_create_tables()
     print("\nAll tests completed.")
