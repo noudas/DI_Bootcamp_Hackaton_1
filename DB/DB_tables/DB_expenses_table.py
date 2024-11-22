@@ -24,7 +24,7 @@ def create_table_expenses():
 
         cursor.execute(create_table_query)
         connection.commit()
-        print("Table 'expenses' with cascading delete on category_id created successfully.")
+        print("Table 'expenses' created successfully.")
 
     except Exception as error:
         print(f"Error while creating the table 'expenses': {error}")
