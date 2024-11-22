@@ -2,3 +2,4 @@ Project_env/
 __pychache__/
 .env
 .config.py
+DB/__pycache__/
