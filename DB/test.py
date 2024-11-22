@@ -2,6 +2,7 @@ from config import Config
 from DB_config.DB_create import db_create
 from DB_config.DB_connect import db_connect
 from DB_tables.DB_initializer import initialize_database
+from DB_Insert_tests.DB_inserts import inserts_tests
 
 
 def test_config():
@@ -43,6 +44,13 @@ def test_db_create_tables():
     print("\nTesting tables creation...")
     initialize_database()
 
+def test_db_insert_table():
+    """
+    Test to check if a all the inserts can be created.
+    """    
+    print("\nTesting tables inserts...")
+    inserts_tests()
+
 
 if __name__ == "__main__":
     print("Starting tests...\n")
@@ -50,5 +58,6 @@ if __name__ == "__main__":
     test__db__default_connect()
     test_db_creation()
     test_db_create_tables()
+    test_db_insert_table()
 
     print("\nAll tests completed.")

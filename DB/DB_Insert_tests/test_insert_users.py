@@ -1,4 +1,4 @@
-from DB_insert_helper import insert_into
+from DB_Insert_tests.DB_insert_helper import insert_into
 
 def test_insert_user():
     query = """

@@ -3,3 +3,4 @@ __pychache__/
 .env
 .config.py
 DB/__pycache__/
+DB/DB_Insert_tests/__pycache__/
