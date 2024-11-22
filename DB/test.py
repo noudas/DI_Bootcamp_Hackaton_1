@@ -4,6 +4,10 @@ from DB_config.DB_connect import db_connect
 from DB_tables.DB_user_table import create_table_users
 from DB_tables.DB_categories_table import create_table_categories
 from DB_tables.DB_expenses_table import create_table_expenses
+from DB_tables.DB_budget_table import create_table_budget
+
+
+
 
 def test_config():
     """
@@ -45,6 +49,7 @@ def test_db_create_tables():
     create_table_users()
     create_table_categories()
     create_table_expenses()
+    create_table_budget()
 
 if __name__ == "__main__":
     print("Starting tests...\n")
@@ -52,4 +57,5 @@ if __name__ == "__main__":
     test__db__default_connect()
     test_db_creation()
     test_db_create_tables()
+
     print("\nAll tests completed.")
