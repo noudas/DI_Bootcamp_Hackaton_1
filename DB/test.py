@@ -1,14 +1,7 @@
 from config import Config
 from DB_config.DB_create import db_create
 from DB_config.DB_connect import db_connect
-from DB_tables.DB_user_table import create_table_users
-from DB_tables.DB_categories_table import create_table_categories
-from DB_tables.DB_expenses_table import create_table_expenses
-from DB_tables.DB_budget_table import create_table_budget
-from DB_tables.DB_savings_goal_table import create_table_savings_goals
-from DB_tables.DB_deposits_table import create_table_deposits
-
-
+from DB_tables.DB_initializer import initialize_database
 
 
 def test_config():
@@ -48,12 +41,7 @@ def test_db_create_tables():
     Test to check if a all the tables can be created.
     """
     print("\nTesting tables creation...")
-    create_table_users()
-    create_table_categories()
-    create_table_expenses()
-    create_table_budget()
-    create_table_savings_goals()
-    create_table_deposits()
+    initialize_database()
 
 
 if __name__ == "__main__":
