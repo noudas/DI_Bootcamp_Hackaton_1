@@ -1,3 +1,8 @@
+import psycopg2
+from config import Config
+from cls_DB_connect import DB_Connect
+
+
 class Saving_Goals:
     def __init__(self, goal_name, target_amount, current_amount, due_date): # Initializes a savings goal.
         self.goal_name = goal_name

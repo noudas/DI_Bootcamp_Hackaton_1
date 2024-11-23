@@ -48,18 +48,18 @@ class DB_Connect:
         except Exception as error:
             print(f"Error while disconnecting from the database: {error}")
 
-    def execute_query(self, query, values=None):
+    def execute_query(self, query, params=None):
         """
         Executes SQL queries that modify the database (e.g., INSERT, UPDATE, DELETE, etc.).
 
         Args:
             query (str): The SQL query to execute.
-            values (tuple): Parameters for the SQL query (optional).
+            params (tuple): Parameters for the SQL query (optional).
         """
         try:
             connection = self.connect()
             cursor = connection.cursor()
-            cursor.execute(query, values)
+            cursor.execute(query, params)
             connection.commit()
             print("Query executed successfully.")
         except Exception as error:

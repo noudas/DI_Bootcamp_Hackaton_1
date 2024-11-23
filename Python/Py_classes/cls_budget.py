@@ -3,6 +3,8 @@ from config import Config
 from cls_DB_connect import DB_Connect
 
 
+from cls_DB_connect import DB_Connect
+
 class Budget:
     def __init__(self, db: DB_Connect, user_id, total_budget, savings=0.00, spent_amount=0.00):
         """
@@ -22,27 +24,18 @@ class Budget:
 
     def create_budget(self):
         """
-        Inserts a new budget record into the database.
+        Inserts a new budget record into the database using the execute_query method.
         """
-        connection = self.db.connect()
-        cursor = connection.cursor()
-        try:
-            cursor.execute("""
-                INSERT INTO budget (user_id, total_budget, savings, spent_amount)
-                VALUES (%s, %s, %s, %s)
-            """, (self.user_id, self.total_budget, self.savings, self.spent_amount))
-            connection.commit() 
-            print("Budget created successfully!")
-        except Exception as error:
-            connection.rollback()
-            print(f"Error occurred - While creating budget: {error}")
-        finally:
-            cursor.close() 
-            self.db.disconnect()
+        query = """
+            INSERT INTO budget (user_id, total_budget, savings, spent_amount)
+            VALUES (%s, %s, %s, %s)
+        """
+        params = (self.user_id, self.total_budget, self.savings, self.spent_amount)
+        self.db.execute_query(query, params)
 
     def update_budget(self, new_total_budget=None, new_savings=None, new_spent_amount=None):
         """
-        Updates the budget values in the database.
+        Updates the budget values in the database using the execute_query method.
         
         :param new_total_budget: The new total budget value, if updating.
         :param new_savings: The new savings value, if updating.
@@ -52,43 +45,29 @@ class Budget:
         new_savings = new_savings if new_savings is not None else self.savings
         new_spent_amount = new_spent_amount if new_spent_amount is not None else self.spent_amount
 
-        connection = self.db.connect()
-        cursor = connection.cursor()
-        try:
-            cursor.execute("""
-                UPDATE budget 
-                SET total_budget = %s, savings = %s, spent_amount = %s, updated_at = CURRENT_TIMESTAMP
-                WHERE user_id = %s
-            """, (new_total_budget, new_savings, new_spent_amount, self.user_id))
-            connection.commit()
-            print("Budget updated successfully!")
-        except Exception as error:
-            connection.rollback()
-            print(f"Error occurred - While updating budget: {error}")
-        finally:
-            cursor.close()
-            self.db.disconnect()
+        query = """
+            UPDATE budget 
+            SET total_budget = %s, savings = %s, spent_amount = %s, updated_at = CURRENT_TIMESTAMP
+            WHERE user_id = %s
+        """
+        params = (new_total_budget, new_savings, new_spent_amount, self.user_id)
+        self.db.execute_query(query, params)
 
     @classmethod
     def get_budget(cls, db: DB_Connect, user_id):
         """
-        Fetches the current budget for a user from the database.
+        Fetches the current budget for a user from the database using the fetch_results method.
         
         :param db: An instance of the DB_Connect class.
         :param user_id: The ID of the user whose budget is to be fetched.
         :return: An instance of Budget if the budget is found, None otherwise.
         """
-        connection = db.connect()
-        cursor = connection.cursor()
-        try:
-            cursor.execute("SELECT * FROM budget WHERE user_id = %s", (user_id,))
-            row = cursor.fetchone()
-            if row:
-                return cls(db, row[1], row[2], row[3], row[4])
-            return None
-        except Exception as error:
-            print(f"Error occurred - While fetching budget: {error}")
-            return None
-        finally:
-            cursor.close()
-            db.disconnect() 
+        query = "SELECT * FROM budget WHERE user_id = %s"
+        params = (user_id,)
+        results = db.fetch_results(query, params)
+
+        if results:
+            # Assuming the schema is: (budget_id, user_id, total_budget, savings, spent_amount, remaining_amount, created_at, updated_at)
+            row = results[0]  # Get the first result (only one row should be returned)
+            return cls(db, row[1], row[2], row[3], row[4])
+        return None
