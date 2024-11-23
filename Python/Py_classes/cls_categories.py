@@ -1,7 +1,13 @@
+import psycopg2
+from config import Config
+from Py_config.Py_connect import db_connect
+
 class Categories:
+    db_connection = db_connect()
     def __init__(self, category_name, description): #Initializes a category object.
         self.category_name = category_name
         self.description = description
+        
     def create_category(self, db_connection): #Inserts a new category.
         cursor = db_connection.cursor()
         try:
@@ -43,8 +49,11 @@ class Categories:
     @classmethod
     def delete_category(cls, db_connection, category_id): #Deletes a category.
         cursor = db_connection.cursor()
-        cursor.execute(" DELETE FROM users WHERE id = %s",(category_id))
-    
+        try:
+            cursor.execute("DELETE FROM users WHERE id = %s",(category_id))
+        finally:
+            cursor.close()  # Close the cursor
+
     
     
     
