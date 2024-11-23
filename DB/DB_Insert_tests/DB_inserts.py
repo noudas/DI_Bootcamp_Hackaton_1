@@ -11,7 +11,7 @@ def inserts_tests():
     """
     test_insert_user() # Ok
     test_insert_category() # Ok
-    test_insert_deposit() 
+    test_insert_deposit() # Ok
     test_insert_expense() # Ok
-    test_insert_budget()
-    test_insert_savings_goal()
+    test_insert_budget() # Ok
+    test_insert_savings_goal() # Ok
