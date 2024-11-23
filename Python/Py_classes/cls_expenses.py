@@ -22,18 +22,27 @@ class Expenses:
             cursor.execute("SELECT * FROM expenses WHERE expense_id = %s",(expense_id))
         finally:
             cursor.close()  # Close the cursor
-            
-    @classmethod    
-    def get_expenses_by_category(cls, db_connection, category_id): #Fetches expenses for a specific category.
+    
+    @classmethod
+    def get_all_expenses(cls, db_connection): #Fetches an expense by ID.
+        cursor = db_connection.cursor()
+        try:    
+            cursor.execute("SELECT * FROM expenses")
+            expenses = cursor.fetchall()
+            return expenses
+        finally:
+            cursor.close()  # Close the cursor          
+     
+    def get_expenses_by_category(self, db_connection ): #Fetches expenses for a specific category by name.
         cursor = db_connection.cursor()
         try:
-            cursor.execute("SELECT * FROM expenses WHERE category_id = %s",(category_id))
+            cursor.execute("SELECT * FROM expenses WHERE category_id = %s",(self.category_name))
         finally:
             cursor.close()  # Close the cursor
     @classmethod
     def delete_expense(cls, db_connection, expense_id): #Deletes an expense.
         cursor = db_connection.cursor()
         try:
-            cursor.execute("DELETE FROM users WHERE id = %s",(expense_id))
+            cursor.execute("DELETE FROM expenses WHERE id = %s",(expense_id))
         finally:
             cursor.close()  # Close the cursor
