@@ -1,0 +1,9 @@
+__init__(self, goal_name, target_amount, current_amount, due_date): Initializes a savings goal.
+
+create_goal(self, db_connection): Adds a new savings goal.
+
+update_goal(self, db_connection, goal_id): Updates savings goal details.
+
+delete_goal(cls, db_connection, goal_id): Deletes a savings goal.
+
+get_goals(cls, db_connection): Fetches all savings goals.
