@@ -1,5 +1,3 @@
-import psycopg2
-from config import Config
 from cls_DB_connect import DB_Connect
 
 class User:
@@ -29,21 +27,12 @@ class User:
         """
         Inserts a new user into the database using the DB_Connect class.
         """
-        connection = self.db.connect()
-        cursor = connection.cursor()
-        try:
-            cursor.execute("""
-                INSERT INTO users (username, first_name, last_name, email, password)
-                VALUES (%s, %s, %s, %s, %s)
-            """, (self.username, self.first_name, self.last_name, self.email, self.password))
-            connection.commit()
-            print("User created successfully!")
-        except Exception as error:
-            connection.rollback()  # Rollback in case of error
-            print(f"Error occurred - While creating user: {error}")
-        finally:
-            cursor.close()
-            self.db.disconnect()
+        query = """
+            INSERT INTO users (username, first_name, last_name, email, password)
+            VALUES (%s, %s, %s, %s, %s)
+        """
+        params = (self.username, self.first_name, self.last_name, self.email, self.password)
+        self.db.execute_query(query, params)
 
     @classmethod
     def get_user_by_id(cls, db: DB_Connect, user_id):
@@ -54,19 +43,14 @@ class User:
         :param user_id: The ID of the user to fetch.
         :return: An instance of User if the user is found, None otherwise.
         """
-        connection = db.connect()
-        cursor = connection.cursor()
-        try:
-            cursor.execute("SELECT * FROM users WHERE user_id = %s", (user_id,))
-            row = cursor.fetchone()
-            if row:
-                return cls(db, row[1], row[2], row[3], row[4], row[5])
-            return None
-        except Exception as error:
-            print(f"Error occurred - While fetching user: {error}")
-        finally:
-            cursor.close()
-            db.disconnect()
+        query = "SELECT * FROM users WHERE user_id = %s"
+        params = (user_id,)
+        results = db.fetch_results(query, params)
+
+        if results:
+            row = results[0]  # Assuming user_id is unique, only one row should be returned
+            return cls(db, row[1], row[2], row[3], row[4], row[5])
+        return None
 
     def update_user(self, new_username=None, new_email=None, new_password=None):
         """
@@ -80,22 +64,13 @@ class User:
         new_email = new_email if new_email else self.email
         new_password = new_password if new_password else self.password
 
-        connection = self.db.connect()
-        cursor = connection.cursor()
-        try:
-            cursor.execute("""
-                UPDATE users 
-                SET username = %s, email = %s, password = %s 
-                WHERE username = %s
-            """, (new_username, new_email, new_password, self.username))
-            connection.commit()
-            print("User updated successfully!")
-        except Exception as error:
-            connection.rollback()
-            print(f"Error occurred - While updating user: {error}")
-        finally:
-            cursor.close()
-            self.db.disconnect()
+        query = """
+            UPDATE users 
+            SET username = %s, email = %s, password = %s 
+            WHERE username = %s
+        """
+        params = (new_username, new_email, new_password, self.username)
+        self.db.execute_query(query, params)
 
     @classmethod
     def delete_user(cls, db: DB_Connect, user_id):
@@ -105,15 +80,6 @@ class User:
         :param db: An instance of the DB_Connect class.
         :param user_id: The ID of the user to delete.
         """
-        connection = db.connect()
-        cursor = connection.cursor()
-        try:
-            cursor.execute("DELETE FROM users WHERE user_id = %s", (user_id,))
-            connection.commit()
-            print("User deleted successfully!")
-        except Exception as error:
-            connection.rollback()
-            print(f"Error occurred - While deleting user: {error}")
-        finally:
-            cursor.close()
-            db.disconnect()
+        query = "DELETE FROM users WHERE user_id = %s"
+        params = (user_id,)
+        db.execute_query(query, params)
