@@ -35,14 +35,18 @@ class User:
         finally:
             cursor.close()
             
-    def update_user(self, db_connection, new_username, new_first_name, new_last_name, new_email, new_password, user_id): #Updates user information.
+    def update_user(self, db_connection, new_username, new_email, new_password, user_id): #Updates user information.
+        new_username = new_username if new_username is not None else self.username
+        new_email = new_email if new_email is not None else self.email
+        new_password = new_password if new_password is not None else self.password
+        
         cursor = db_connection.cursor()
+    
         try:
             cursor.execute(""" 
                         UPDATE users 
-                        SET Username = %s,first_name= %s, last_name= %s, email= %s, password= %s 
-                        WHERE user_id = %s""",
-                        (new_username =, new_first_name, new_last_name, new_email, new_password, user_id))
+                        SET Username = %s, email= %s, password= %s 
+                        WHERE user_id = %s""", (new_username , new_email , new_password  , user_id))
             db_connection.commit()
             print("User updated successfully!")
         except Exception as error:

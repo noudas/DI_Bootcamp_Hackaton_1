@@ -24,14 +24,15 @@ class Categories:
         categories = [cls(category_name = row[1]) for row in results]
         return categories
 
-    def update_category(self, db_connection, category_id): #Updates a category.
+    def update_category(self, db_connection, category_id, new_category_name): #Updates a category.
+        new_category_name = new_category_name if new_category_name is not None else self.category_name
         cursor = db_connection.cursor()
         try:
             cursor.execute(""" 
                         UPDATE categories 
                         SET name = %s
                         WHERE category_id = %s""",
-                        (self.category_name, category_id))
+                        (new_category_name, category_id))
             db_connection.commit()
             print("Category updated successfully!")
         except Exception as error:
