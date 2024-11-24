@@ -1,66 +1,87 @@
-
+import psycopg2
+from config import Config
+from cls_DB_connect import DB_Connect
 
 class User:
-    def __init__(self, username, first_name, last_name, email, password): #Initializes a user object.
+    """
+    A class representing a user and associated operations in the database.
+    """
+
+    def __init__(self, db: DB_Connect, username, first_name, last_name, email, password):
+        """
+        Initializes a User object with basic attributes and a DB_Connect instance.
+        
+        :param db: An instance of the DB_Connect class to manage database connections.
+        :param username: The username of the user.
+        :param first_name: The first name of the user.
+        :param last_name: The last name of the user.
+        :param email: The email address of the user.
+        :param password: The password for the user.
+        """
+        self.db = db
         self.username = username
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
         self.password = password
-        
-    def create_user(self, db_connection):# Inserts a new user into the database.
-        cursor = db_connection.cursor()
-        try:
-            cursor.execute("""
-                    INSERT INTO users (username, first_name, last_name, email, password)
-                    VALUES(%s,%s,%s,%s,%s)""",
-                    (self.username, self.first_name, self.last_name, self.email, self.password))
-            db_connection.commit()
-            print("User created successfully!")
-        except Exception as error:
-            db_connection.rollback()  # Rollback in case of error
-            print(f"Error occurred  - While creating user: {error}")
-        finally:
-            cursor.close()  # Close the cursor
-    
+
+    def create_user(self):
+        """
+        Inserts a new user into the database using the DB_Connect class.
+        """
+        query = """
+            INSERT INTO users (username, first_name, last_name, email, password)
+            VALUES (%s, %s, %s, %s, %s)
+        """
+        params = (self.username, self.first_name, self.last_name, self.email, self.password)
+        self.db.execute_query(query, params)
+
     @classmethod
-    def get_user_by_id(cls, db_connection, user_id): #Fetches a user by ID.
-        cursor = db_connection.cursor()
-        try:
-            cursor.execute("Select * from users WHERE id = %s",(user_id))
-            row = cursor.fetchone()
-            if row:
-                return cls(row[1], row[2], row[3], row[4], row[5],)
-            return None
-        finally:
-            cursor.close()
-            
-    def update_user(self, db_connection, new_username, new_email, new_password, user_id): #Updates user information.
-        new_username = new_username if new_username is not None else self.username
-        new_email = new_email if new_email is not None else self.email
-        new_password = new_password if new_password is not None else self.password
+    def get_user_by_id(cls, db: DB_Connect, user_id):
+        """
+        Fetches a user by ID from the database using the DB_Connect class.
         
-        cursor = db_connection.cursor()
-    
-        try:
-            cursor.execute(""" 
-                        UPDATE users 
-                        SET Username = %s, email= %s, password= %s 
-                        WHERE user_id = %s""", (new_username , new_email , new_password  , user_id))
-            db_connection.commit()
-            print("User updated successfully!")
-        except Exception as error:
-            db_connection.rollback()  # Rollback in case of error
-            print(f"Error occurred - While updating user: {error}")
-        finally:
-            cursor.close()  # Close the cursor
-            
-    def delete_user(cls, db_connection, user_id):# Deletes a user.
-        cursor = db_connection.cursor()
-        try:
-            cursor.execute(" DELETE FROM users WHERE id = %s",(user_id))
-            db_connection.commit()
-        finally:
-            cursor.close()
-         
-         
+        :param db: An instance of the DB_Connect class.
+        :param user_id: The ID of the user to fetch.
+        :return: An instance of User if the user is found, None otherwise.
+        """
+        query = "SELECT * FROM users WHERE user_id = %s"
+        params = (user_id,)
+        results = db.fetch_results(query, params)
+
+        if results:
+            row = results[0]
+            return cls(db, row[1], row[2], row[3], row[4], row[5])
+        return None
+
+    def update_user(self, new_username=None, new_email=None, new_password=None):
+        """
+        Updates user information in the database using the DB_Connect class.
+        
+        :param new_username: The new username, if updating.
+        :param new_email: The new email address, if updating.
+        :param new_password: The new password, if updating.
+        """
+        new_username = new_username if new_username else self.username
+        new_email = new_email if new_email else self.email
+        new_password = new_password if new_password else self.password
+
+        query = """
+            UPDATE users 
+            SET username = %s, email = %s, password = %s 
+            WHERE username = %s
+        """
+        params = (new_username, new_email, new_password, self.username)
+        self.db.execute_query(query, params)
+
+    @classmethod
+    def delete_user(cls, db: DB_Connect, user_id):
+        """
+        Deletes a user from the database using the DB_Connect class.
+        
+        :param db: An instance of the DB_Connect class.
+        :param user_id: The ID of the user to delete.
+        """
+        query = "DELETE FROM users WHERE user_id = %s"
+        params = (user_id,)
+        db.execute_query(query, params)

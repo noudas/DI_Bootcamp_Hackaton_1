@@ -2,3 +2,8 @@ Project_env/
 __pychache__/
 .env
 .config.py
+DB/__pycache__/
+DB/DB_Insert_tests/__pycache__/
+Python/__pycache__/config.cpython-312.pyc
+Python/Py_config/__pycache__/Py_connect.cpython-312.pyc
+DB/DB_config/__pycache__/
