@@ -22,3 +22,5 @@ Python/Py_classes/__pycache__/__init__.cpython-312.pyc
 Python/Py_classes/__pycache__/cls_budget.cpython-312.pyc
 Python/Py_classes/__pycache__/cls_DB_connect.cpython-312.pyc
 Python/Py_classes/__pycache__/cls_tests.cpython-312.pyc
+Python/app_manager/__pycache__/manager.cpython-312.pyc
+Python/__pycache__/config.cpython-312.pyc

@@ -1,8 +1,12 @@
-from Py_classes import *
-from config import Config
 import psycopg2
+import sys
 import os
-import config
+
+# Add the parent directory of Py_classes to the Python path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from Py_classes import DB_Connect, User, Budget, Deposits, Expenses, Categories, Saving_Goals
+from config import Config
 
 db = DB_Connect(db_name=Config.DB_NAME)
 
@@ -52,7 +56,6 @@ def user_menu():
         except:
             continue
 
-
 def budget_menu():
     print("Budget Menu:\n Please an option from 1-6:")
     while True:
@@ -91,7 +94,6 @@ def budget_menu():
 
         except:
             continue
-
 
 def deposits_menu():
     print("Deposits Menu:\n Please an option from 1-3:")
@@ -142,7 +144,6 @@ Deposits Menu:
             print("Invalid input. Please enter a number.")
         except Exception as error:
             print(f"An error occurred: {error}")
-
 
 def expenses_menu():
     print("Expenses Menu:\n Please an option from 1-4:")
@@ -375,7 +376,6 @@ Please select an option:
         except:
             continue
 
-
 def start_menu():
     print("Main_Menu:\n Please an option from 1-6:")
     while True:
@@ -409,3 +409,4 @@ def start_menu():
         except:
             continue
         
+start_menu()

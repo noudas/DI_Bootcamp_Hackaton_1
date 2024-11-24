@@ -1,13 +1,13 @@
 # __init__.py
 
 # Absolute imports
-from Py_classes.cls_DB_connect import DB_Connect
-from Py_classes.cls_budget import Budget
-from Py_classes.cls_categories import Categories
-from Py_classes.cls_deposits import Deposits
-from Py_classes.cls_expenses import Expenses
-from Py_classes.cls_savings_goal import Saving_Goals
-from Py_classes.cls_user import User
+from .cls_DB_connect import DB_Connect
+from .cls_budget import Budget
+from .cls_categories import Categories
+from .cls_deposits import Deposits
+from .cls_expenses import Expenses
+from .cls_savings_goal import Saving_Goals
+from .cls_user import User
 
 # Load environment variables from the .env file
 from dotenv import load_dotenv
