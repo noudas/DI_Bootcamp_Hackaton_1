@@ -1,4 +1,5 @@
-from Py_classes.cls_user import *
+from Py_classes import *
+from config import Config
 import psycopg2
 import os
 import config
