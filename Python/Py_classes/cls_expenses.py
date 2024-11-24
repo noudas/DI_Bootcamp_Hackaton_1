@@ -27,8 +27,12 @@ class Expenses:
         :return: The category_id corresponding to the category name.
         """
         query = "SELECT category_id FROM categories WHERE LOWER(name) = %s"
-        result = self.db.fetch_result(query, (category_name,))
-        return result[0] if result else None
+        result = self.db.fetch_results(query, (category_name,))
+        
+        if result:
+            return result[0]['category_id']
+        return None
+
 
     def add_expense(self):
         """
@@ -42,13 +46,14 @@ class Expenses:
             INSERT INTO expenses (amount, category_id, notes)
             VALUES (%s, %s, %s)
         """
-        values = (self.amount, self.category_id, self.notes)
+        values = (self.amount, self.category_id, self.notes)  # category_id is now an integer
         try:
             self.db.execute_query(query, values)
             print("Expense added successfully!")
         except Exception as error:
             print(f"Error occurred while adding an expense: {error}")
 
+        
     @classmethod
     def get_expense_by_id(cls, db: DB_Connect, expense_id):
         """
@@ -59,7 +64,7 @@ class Expenses:
         :return: The expense record or None if not found.
         """
         query = "SELECT * FROM expenses WHERE expense_id = %s"
-        result = db.fetch_result(query, (expense_id,))
+        result = db.fetch_results(query, (expense_id,))
         return result
 
     @classmethod    
