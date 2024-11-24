@@ -138,38 +138,100 @@ def expenses_menu():
         
         except:
             continue
+        
 def categories_menu():
-    print("Categories Menu:\n Please an option from 1-4:")
-    while True: 
+    """
+    Displays a menu for managing categories and executes the selected option.
+    """
+
+    while True:
         try:
-            categories_choice = int(input(
-                """
-                    1. Add new category \n
-                    2. Show all categories\n
-                    3. Update Existing category\n
-                    4. Delete category\n
-                """
-                                    ))
+            print("""
+Categories Menu:
+1. Add new category
+2. Show all categories
+3. Update existing category
+4. Delete category
+5. Exit
+            """)
+            categories_choice = int(input("Please select an option: "))
+
             match categories_choice:
                 case 1:
-                    pass
-            # This block executes if value matches pattern1
-                case 2:
-                    pass
-            # This block executes if value matches pattern2
-                case 3:
-                    pass
-            # This block executes if value matches pattern3
-                case 4:
-                    pass
-            # This block executes if value matches pattern4
-              
-            
-            raise Exception("Input must be between 1 and 4.")
-        
-        except:
-            continue
+                    # Add a new category
+                    name = input("Enter the name of the category: ")
+                    description = input("Enter the description of the category (optional): ")
 
+                    Categories.create_category(db, name, description)
+                    print("Category added successfully!")
+
+                case 2:
+                    # Show all categories
+                    categories = Categories.get_all_categories(db)
+                    if categories:
+                        print(f"\nYou have {len(categories)} category(ies):")
+                        for idx, category in enumerate(categories, 1):
+                            print(f"{idx}. {category['name']} - {category['description']}")
+                    else:
+                        print("No categories found.")
+
+                case 3:
+                    # Update an existing category
+                    categories = Categories.get_all_categories(db)
+                    if not categories:
+                        print("No categories found to update.")
+                        continue
+
+                    print("Select a category to update:")
+                    for idx, category in enumerate(categories, 1):
+                        print(f"{idx}. {category['name']}")
+
+                    category_choice = int(input("Enter the number of the category to update: ")) - 1
+                    if category_choice < 0 or category_choice >= len(categories):
+                        print("Invalid choice. Please try again.")
+                        continue
+
+                    selected_category = categories[category_choice]
+                    print(f"Updating category: {selected_category['name']}")
+
+                    new_name = input(f"Enter new name (current: {selected_category['name']}): ") or selected_category['name']
+                    new_description = input(f"Enter new description (current: {selected_category['description']}): ") or selected_category['description']
+
+                    Categories.update_category(db, selected_category['category_id'], new_name, new_description)
+                    print("Category updated successfully!")
+
+                case 4:
+                    # Delete a category
+                    categories = Categories.get_all_categories(db)
+                    if not categories:
+                        print("No categories found to delete.")
+                        continue
+
+                    print("Select a category to delete:")
+                    for idx, category in enumerate(categories, 1):
+                        print(f"{idx}. {category['name']}")
+
+                    category_choice = int(input("Enter the number of the category to delete: ")) - 1
+                    if category_choice < 0 or category_choice >= len(categories):
+                        print("Invalid choice. Please try again.")
+                        continue
+
+                    selected_category = categories[category_choice]
+                    Categories.delete_category(db, selected_category['category_id'])
+                    print(f"Category '{selected_category['name']}' deleted successfully!")
+
+                case 5:
+                    # Exit the menu
+                    print("Exiting the menu. Goodbye!")
+                    break
+
+                case _:
+                    print("Invalid option. Please select a number between 1 and 5.")
+
+        except ValueError:
+            print("Invalid input. Please enter a valid number.")
+        except Exception as e:
+            print(f"An error occurred: {e}")
 
 def saving_menu():
     print("Deposits Menu:\n Please an option from 1-3:")
