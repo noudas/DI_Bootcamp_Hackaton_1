@@ -63,6 +63,8 @@ def test_disconnect_no_connection():
     
     print("Success! No connection to disconnect.")
 
+
+
 if __name__ == '__main__':
     print("Starting tests...\n")
     test_connect_success()
@@ -70,6 +72,4 @@ if __name__ == '__main__':
     test_disconnect()
     test_disconnect_no_connection()
 
-
     print("\nAll tests completed.")
-
