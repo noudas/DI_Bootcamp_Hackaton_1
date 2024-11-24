@@ -19,7 +19,7 @@ def user_menu():
                 """
                                     ))
             match start_choice:
-                case 1:
+                case 1:#Create new user
                     new_username=input("Username:\t")
                     new_first_name=input("First name:\t")
                     new_last_name=input("Last name:\t")
@@ -27,22 +27,19 @@ def user_menu():
                     new_user_password=input("Password:\t")
                     new_user=User(db, new_username, new_first_name, new_last_name, new_email, new_user_password)
                     new_user.create_user()
-                case 2:
+                case 2:#Find user by ID
                     user_id = int(input("Enter User ID"))
                     User.get_user_by_id(db, user_id)
-                case 3:
+                case 3:#Update existing user
                     curr_user_id = int(input("Enter user ID you wish to update"))
                     new_username= input("Enter new username (or leave blank to skip):\t")
                     new_email= input("Enter new email (or leave blank to skip):\t")
                     new_user_password= input("Enter new password (or leave blank to skip):\t")
-                    
                     User.update_user(curr_user_id, new_username=None, new_email=None, new_password=None)
-                case 4:
+                case 4:#Delete existing user
                     user_id = int(input("Enter User ID"))
                     User.delete_user(db, user_id)
-                    
-              
-            
+         
             raise Exception("Input must be between 1 and 4.")
         
         except:
@@ -54,28 +51,30 @@ def budget_menu():
         try:
             start_choice = int(input(
                 """
-                    1. Start new budget\n
+                    1. Create new budget\n
                     2. Update existing budget\n
                     3. Find existing budget\n
                 """
                                     ))
             match start_choice:
-                case 1:
+                case 1:#create new budget
                     user_id = int(input("Enter user id:\t"))
                     total_budget = int(input("Enter total budget:\t"))
                     savings = int(input("Enter amount you wish to save:\t"))
                     spent_amount = int(input("Enter spent amount:\t"))
-                case 2:
+                    new_budget=Budget(db, user_id, total_budget, savings, spent_amount)
+                    new_budget.create_budget()
+                case 2:# Update existing budget
                     user_id = int(input("Enter user id:\t"))
                     new_budget= int(input("Enter new budget total (or leave blank to skip):\t"))
                     new_savings= int(input("Enter new savings amount (or leave blank to skip):\t"))
                     new_spent= int(input("Enter new speant amount (or leave blank to skip):\t"))
                     Budget.update_budget( user_id, new_total_budget=None, new_savings=None, new_spent_amount=None)
-                case 3:
+                case 3:#Find existing budget
                     user_id = int(input("Enter User ID"))
                     Budget.get_budget( db, user_id)
                
-            raise Exception("Input must be between 1 and .")
+            raise Exception("Input must be between 1 and 3")
         
         except:
             continue
@@ -91,15 +90,20 @@ def deposits_menu():
                 """
                                     ))
             match start_choice:
-                case 1:
-                    pass
-            # This block executes if value matches pattern1
-                case 2:
-                    pass
-            # This block executes if value matches pattern2
-                case 3:
-                    pass
-            # This block executes if value matches pattern3
+                case 1:#Add new deposit
+                    user_id = int(input("Enter user id:\t"))
+                    amount = int(input("Enter deposit amount:\t"))
+                    description = input("Description of deposit:\t")
+                    new_dep= Deposits(user_id, amount, description)
+                    new_dep.add_deposit()
+            
+                case 2:#Show all deposits
+                    user_id = int(input("Enter user id:\t"))
+                    Deposits.get_deposits( db: DB_Connect,user_id)
+            
+                case 3:#Delete deposit
+                    deposit_id = int(input("Enter deposit id:\t"))
+                    Deposits.delete_deposit(, db: DB_Connect, deposit_id)
                
             raise Exception("Input must be between 1 and 3.")
         
