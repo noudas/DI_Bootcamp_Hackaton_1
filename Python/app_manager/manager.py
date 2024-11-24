@@ -204,7 +204,7 @@ def expenses_menu():
             ))
             match exp_choice:
                 case 1:  # Add new Expense
-                    amount = float(input("Enter deposit amount: "))
+                    amount = float(input("Enter expense amount: "))
                     categories = Categories.get_all_categories(db)
                     for idx, category in enumerate(categories, 1):
                             print(f"{idx}. Name: {category.name}, Description: {category.description}")

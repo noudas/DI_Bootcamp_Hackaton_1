@@ -6,7 +6,6 @@ from .cls_budget import Budget
 from .cls_categories import Categories
 from .cls_deposits import Deposits
 from .cls_expenses import Expenses
-from .cls_savings_goal import Saving_Goals
 from .cls_user import User
 
 # Load environment variables from the .env file
