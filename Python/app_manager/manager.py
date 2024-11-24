@@ -97,33 +97,51 @@ def deposits_menu():
     print("Deposits Menu:\n Please an option from 1-3:")
     while True:
         try:
-            dep_choice = int(input(
-                """
-1. Add new deposit\n
-2. Show all deposits\n
-3. Delete deposit\n
-                """
-            ))
+            print("""
+Deposits Menu:
+1. Add new deposit
+2. Show all deposits
+3. Delete deposit
+4. Exit
+            """)
+            dep_choice = int(input("Please select an option: "))
+
             match dep_choice:
-                case 1:  # Add new deposit
-                    user_id = int(input("Enter user id:\t"))
-                    amount = int(input("Enter deposit amount:\t"))
-                    description = input("Description of deposit:\t")
-                    new_dep = Deposits(user_id, amount, description)
+                case 1:
+                    user_id = int(input("Enter user ID: "))
+                    amount = float(input("Enter deposit amount: "))
+                    description = input("Enter description of deposit (optional): ")
+                    new_dep = Deposits(db, user_id, amount, description)
                     new_dep.add_deposit()
 
-                case 2:  # Show all deposits
-                    user_id = int(input("Enter user id:\t"))
-                    Deposits.get_deposits(db: DB_Connect, user_id)
+                case 2:
+                    user_id = int(input("Enter user ID: "))
+                    deposits = Deposits.get_deposits(db, user_id)
+                    if deposits:
+                        print("\nDeposits:")
+                        for deposit in deposits:
+                            print(
+                                f"ID: {deposit['deposit_id']}, Amount: {deposit['amount']}, "
+                                f"Description: {deposit['description']}"
+                            )
+                    else:
+                        print("No deposits found for this user.")
 
-                case 3:  # Delete deposit
-                    deposit_id = int(input("Enter deposit id:\t"))
-                    Deposits.delete_deposit(, db: DB_Connect, deposit_id)
+                case 3:
+                    deposit_id = int(input("Enter deposit ID to delete: "))
+                    Deposits.delete_deposit(db, deposit_id)
 
-            raise Exception("Input must be between 1 and 3.")
+                case 4:  # Exit
+                    print("Exiting Deposits Menu.")
+                    break
 
-        except:
-            continue
+                case _:
+                    print("Invalid option. Please select between 1 and 4.")
+
+        except ValueError:
+            print("Invalid input. Please enter a number.")
+        except Exception as error:
+            print(f"An error occurred: {error}")
 
 
 def expenses_menu():
