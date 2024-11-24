@@ -1,10 +1,5 @@
-from Py_classes.cls_user import User  
-from Py_classes.cls_budget import Budget
-from Py_classes.cls_categories import Categories
-from Py_classes.cls_expenses import Expenses
-from Py_classes.cls_deposits import Deposits
+from Py_classes import *
 from config import Config
-from Py_classes.cls_DB_connect import DB_Connect
 import psycopg2
 
 def user_menu():
