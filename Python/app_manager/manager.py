@@ -1,17 +1,19 @@
-from Py_classes.cls_user import User  
-from Py_classes.cls_budget import Budget
-from Py_classes.cls_categories import Categories
-from Py_classes.cls_expenses import Expenses
-from Py_classes.cls_deposits import Deposits
-from config import Config
-from Py_classes.cls_DB_connect import DB_Connect
+from Py_classes.cls_user import *
 import psycopg2
+import os
+import config
+
+
+db = DB_Connect(db_name=Config.DB_NAME)
+
+
+
 
 def user_menu():
     print("User Menu:\n Please an option from 1-6:")
-    while True: 
+    while True:
         try:
-            start_choice = int(input(
+            start_choice=int(input(
                 """
                     1. Create new user\n
                     2. Find user by id\n
@@ -21,20 +23,18 @@ def user_menu():
                                     ))
             match start_choice:
                 case 1:
-                    
-                    new_username= input("Username:\t")
-                    new_first_name= input("First name:\t")
-                    new_last_name= input("Last name:\t")
-                    new_email= input("Email:\t")
-                    new_user_password= input("Password:\t")
-                    new_user = User(db: DB_Connect, new_username, new_first_name, new_last_name, new_email, new_user_password))
+                    new_username=input("Username:\t")
+                    new_first_name=input("First name:\t")
+                    new_last_name=input("Last name:\t")
+                    new_email=input("Email:\t")
+                    new_user_password=input("Password:\t")
+                    new_user=User(db: DB_Connect, new_username, new_first_name, new_last_name, new_email, new_user_password)
                     new_user.User.create_user()
                 case 2:
                     user_id = int(input("Enter User ID"))
                     User.get_user_by_id(db: DB_Connect, user_id)
                 case 3:
                     new_username= input("Enter new username (or leave blank to skip):\t")
-                  
                     new_email= input("Enter new email (or leave blank to skip):\t")
                     new_user_password= input("Enter new password (or leave blank to skip):\t")
                     User.update_user( new_username=None, new_email=None, new_password=None)
