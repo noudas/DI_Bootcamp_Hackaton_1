@@ -17,6 +17,7 @@ def user_menu():
 2. Find user by ID\n
 3. Update existing user\n
 4. Delete existing user\n
+5. Exit
                 """
             ))
             match user_choice:
@@ -46,6 +47,9 @@ def user_menu():
                 case 4:  # Delete existing user
                     user_id = int(input("Enter User ID"))
                     User.delete_user(db, user_id)
+                case 5:
+                    print("Exiting the menu. Goodbye!")
+                    break
 
             raise Exception("Input must be between 1 and 4.")
 
@@ -62,6 +66,7 @@ def budget_menu():
 1. Create new budget\n
 2. Update existing budget\n
 3. Find existing budget\n
+4. Exit
                 """
             ))
             match budget_choice:
@@ -86,8 +91,11 @@ def budget_menu():
                 case 3:  # Find existing budget
                     user_id = int(input("Enter User ID"))
                     Budget.get_budget(db, user_id)
+                case 4:
+                    print("Exiting the menu. Goodbye!")
+                    break
 
-            raise Exception("Input must be between 1 and 3")
+            raise Exception("Input must be between 1 and 4")
 
         except:
             continue
@@ -102,6 +110,7 @@ def deposits_menu():
 1. Add new deposit\n
 2. Show all deposits\n
 3. Delete deposit\n
+4. Exit
                 """
             ))
             match dep_choice:
@@ -119,6 +128,9 @@ def deposits_menu():
                 case 3:  # Delete deposit
                     deposit_id = int(input("Enter deposit id:\t"))
                     Deposits.delete_deposit(, db: DB_Connect, deposit_id)
+                case 4:
+                    print("Exiting the menu. Goodbye!")
+                    break
 
             raise Exception("Input must be between 1 and 3.")
 
@@ -135,6 +147,7 @@ def expenses_menu():
 1. Add new Expense\n
 2. Find expense by id\n
 3. Find expenses by category\n
+4. Exit
                 """
             ))
             match exp_choice:
@@ -150,6 +163,9 @@ def expenses_menu():
                 case 3:#Find expenses by category
                     category_name = int(input("Enter expense id:\t"))
                     Expenses.get_expenses_by_category(db, category_name)
+                case 4:
+                    print("Exiting the menu. Goodbye!")
+                    break
 
             raise Exception("Input must be between 1 and 4.")
 
@@ -370,6 +386,7 @@ def start_menu():
                     4. Deposits\n
                     5. Categories\n
                     6. Savings Goals\n
+                    7. Exit
                 """
             ))
             match start_choice:
@@ -385,8 +402,10 @@ def start_menu():
                     categories_menu()
                 case 6:
                     saving_menu()
-            
-            raise Exception("Input must be between 1 and 6.")
+                case 7:
+                    print("Exiting the menu. Goodbye!")
+                    break
+            raise Exception("Input must be between 1 and 7.")
 
         except:
             continue
