@@ -22,7 +22,7 @@ def create_table_users():
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             is_active BOOLEAN DEFAULT true
         )
-        """  # Added the closing parenthesis here.
+        """ 
 
         # Execute the SQL query
         cursor.execute(create_table_users_query)

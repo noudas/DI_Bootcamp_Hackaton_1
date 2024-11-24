@@ -12,18 +12,17 @@ db = DB_Connect(db_name=Config.DB_NAME)
 
 
 def user_menu():
-    print("User Menu:\n Please an option from 1-4:")
+    print("User Menu:\n Please select an option from 1-4:")
     while True:
         try:
-            user_choice = int(input(
-                """
-1. Create new user\n
-2. Find user by ID\n
-3. Update existing user\n
-4. Delete existing user\n
+            user_choice = int(input("""
+1. Create new user
+2. Find user by ID
+3. Update existing user
+4. Delete existing user
 5. Exit
-                """
-            ))
+"""))
+
             match user_choice:
                 case 1:  # Create new user
                     new_username = input("Username:\t")
@@ -34,43 +33,64 @@ def user_menu():
                     new_user = User(db, new_username, new_first_name,
                                     new_last_name, new_email, new_user_password)
                     new_user.create_user()
-                case 2:  # Find user by ID
-                    user_id = int(input("Enter User ID"))
-                    User.get_user_by_id(db, user_id)
-                case 3:  # Not Working
-                    curr_user_id = int(
-                        input("Enter user ID you wish to update"))
-                    new_username = input(
-                        "Enter new username (or leave blank to skip):\t")
-                    new_email = input(
-                        "Enter new email (or leave blank to skip):\t")
-                    new_user_password = input(
-                        "Enter new password (or leave blank to skip):\t")
-                    User.update_user(curr_user_id, new_username = None,
-                                     new_email = None, new_password = None)
+
+                case 2:  # Find user by ID - SemiBroken - Fix later
+                    user_id = int(input("Enter User ID: "))
+                    print(f"Attempting to fetch user with ID: {user_id}")  # Debug print
+                    user = User.get_user_by_id(db, user_id)
+                    
+                    if user:
+                        print("User found successfully")
+                        print(f"\nUser Information:")
+                        print(f"ID: {user.user_id}")
+                        print(f"Username: {user.username}")
+                        print(f"First Name: {user.first_name}")
+                        print(f"Last Name: {user.last_name}")
+                        print(f"Email: {user.email}")
+                        print(f"Created At: {user.created_at}")
+                        print(f"Updated At: {user.updated_at}")
+                    else:
+                        print("No user found with the given ID.")
+
+                case 3:  # Update existing user - BROKEN
+                    curr_user_id = int(input("Enter user ID you wish to update"))
+                    user = User.get_user_by_id(db, curr_user_id)
+                    if not user:
+                        print("No user found with the given ID.")
+                        continue
+
+                    print("\nUpdate User Information:")
+                    new_username = input("Enter new username (or press Enter to skip):\t") or user.username
+                    new_email = input("Enter new email (or press Enter to skip):\t") or user.email
+                    new_password = input("Enter new password (or press Enter to skip):\t") or user.password
+
+                    User.update_user(user.user_id, new_username, new_email, new_password)
+                    print(f"User {user.user_id} updated successfully.")
+
                 case 4:
                     user_id = int(input("Enter User ID"))
                     User.delete_user(db, user_id)
+                    print(f"User with ID {user_id} has been deleted.")
+
                 case 5:
                     print("Exiting the menu. Goodbye!")
                     break
 
-            raise Exception("Input must be between 1 and 4.")
-
-        except:
-            continue
+        except ValueError:
+            print("Invalid input. Please enter a number between 1 and 4.")
 
 def budget_menu():
-    print("Budget Menu:\n Please an option from 1-6:")
+    print("Budget Menu:\nPlease an option from 1-6:")
     while True:
         try:
             budget_choice = int(input(
-                """
-1. Create new budget\n
-2. Update existing budget\n
-3. Find existing budget\n
+"""
+1. Create new budget
+2. Update existing budget
+3. Find existing budget
 4. Exit
-                """
+
+Your input: """
             ))
             match budget_choice:
                 case 1:  # create new budget
@@ -281,12 +301,11 @@ Categories Menu:
             print(f"An unexpected error occurred: {e}")
             break  # Exit the loop on any unhandled exception
 
-def saving_menu(): # Broken
-    print("Deposits Menu:\n Please an option from 1-3:")
+def saving_menu():
+    print("Savings Goals Menu:\n Please select an option from 1-5:")
     while True:
         try:
-            start_choice = int(input(
-                """
+            start_choice = int(input("""
 Savings Goals Menu:
 Please select an option:
 1. Create a new savings goal
@@ -294,9 +313,8 @@ Please select an option:
 3. Update a savings goal
 4. Delete a savings goal
 5. Exit
-                  
-                """
-            ))
+"""))
+
             match start_choice:
                 case 1:
                     user_id = int(input("Enter your user ID: "))
@@ -305,30 +323,34 @@ Please select an option:
                     current_amount = float(input("Enter the current amount saved: "))
                     due_date = input("Enter the due date (YYYY-MM-DD): ")
 
-                    goal = Saving_Goals(db, user_id, goal_name, target_amount, current_amount, due_date)
-                    goal.create_goal()
-                    print("Savings goal created successfully!")
-                
-                case 2:
-                    categories = Categories.get_all_categories(db)
-                    if categories:
-                        print(f"\nYou have {len(categories)} category{'s' if len(categories) > 1 else ''}:")
-                        for idx, category in enumerate(categories, 1):
-                            print(f"{idx}. Name: {category.name}, Description: {category.description}")
+                    goal = Saving_Goals.get_goals(db, user_id)
+                    if not goal:
+                        goal = Saving_Goals(db, user_id, goal_name, target_amount, current_amount, due_date)
+                        goal.create_goal()
+                        print("Savings goal created successfully!")
                     else:
-                        print("No categories found.")
-                
+                        print("A savings goal with this name already exists.")
+
+                case 2:
+                    goals = Saving_Goals.get_goals(db, user_id)
+                    if goals:
+                        print(f"\nYou have {len(goals)} savings goal{'s' if len(goals) != 1 else ''}:")
+                        for idx, goal in enumerate(goals, 1):
+                            print(f"{idx}. Goal ID: {goal.goal_id}, Name: {goal.goal_name}, Target Amount: ${goal.target_amount:.2f}, Current Amount: ${goal.current_amount:.2f}, Due Date: {goal.due_date}")
+                    else:
+                        print("No savings goals found.")
+
                 case 3:
                     user_id = int(input("Enter your user ID: "))
                     goals = Saving_Goals.get_goals(db, user_id)
                     if not goals:
                         print("No savings goals found to update.")
                         continue
-                    
+
                     print("Select a goal to update:")
                     for idx, goal in enumerate(goals, 1):
-                        print(f"{idx}. {goal.goal_name}")
-                    
+                        print(f"{idx}. Goal ID: {goal.goal_id}, Name: {goal.goal_name}")
+
                     goal_choice = int(input("Enter the number of the goal to update: ")) - 1
                     if goal_choice < 0 or goal_choice >= len(goals):
                         print("Invalid choice. Please try again.")
@@ -338,39 +360,46 @@ Please select an option:
                     print(f"Updating goal: {selected_goal.goal_name}")
 
                     new_goal_name = input(f"Enter new name (current: {selected_goal.goal_name}): ") or selected_goal.goal_name
-                    new_target_amount = input(f"Enter new target amount (current: {selected_goal.target_amount}): ") or selected_goal.target_amount
-                    new_current_amount = input(f"Enter new current amount (current: {selected_goal.current_amount}): ") or selected_goal.current_amount
+                    new_target_amount = input(f"Enter new target amount (current: ${selected_goal.target_amount:.2f}): ") or selected_goal.target_amount
+                    new_current_amount = input(f"Enter new current amount (current: ${selected_goal.current_amount:.2f}): ") or selected_goal.current_amount
                     new_due_date = input(f"Enter new due date (current: {selected_goal.due_date}): ") or selected_goal.due_date
 
-                    selected_goal.update_goal(
+                    updated_rows = Saving_Goals.update_goal(
+                        db=db,
                         goal_id=selected_goal.goal_id,
                         new_goal_name=new_goal_name,
-                        new_target_amount=float(new_target_amount),
-                        new_current_amount=float(new_current_amount),
-                        new_due_date=new_due_date
+                        new_target_amount=float(new_target_amount) if new_target_amount else None,
+                        new_current_amount=float(new_current_amount) if new_current_amount else None,
+                        new_due_date=new_due_date if new_due_date else None
                     )
-                    print("Savings goal updated successfully!")
-                
+
+                    if updated_rows == 0:
+                        print("No rows were updated. The operation may have failed.")
+                    else:
+                        print(f"Goal updated successfully! {updated_rows} row(s) affected.")
+
                 case 4:
-                    # Delete a savings goal
                     user_id = int(input("Enter your user ID: "))
                     goals = Saving_Goals.get_goals(db, user_id)
                     if not goals:
                         print("No savings goals found to delete.")
                         continue
-                    
+
                     print("Select a goal to delete:")
                     for idx, goal in enumerate(goals, 1):
-                        print(f"{idx}. {goal.goal_name}")
-                    
+                        print(f"{idx}. Goal ID: {goal.goal_id}, Name: {goal.goal_name}")
+
                     goal_choice = int(input("Enter the number of the goal to delete: ")) - 1
                     if goal_choice < 0 or goal_choice >= len(goals):
                         print("Invalid choice. Please try again.")
                         continue
 
                     selected_goal = goals[goal_choice]
-                    Saving_Goals.delete_goal(db, selected_goal.goal_id)
-                    print(f"Savings goal '{selected_goal.goal_name}' deleted successfully!")
+                    deleted_rows = Saving_Goals.delete_goal(db, selected_goal.goal_id)
+                    if deleted_rows == 0:
+                        print("No rows were deleted. The operation may have failed.")
+                    else:
+                        print(f"Savings goal '{selected_goal.goal_name}' deleted successfully! {deleted_rows} row(s) affected.")
 
                 case 5:
                     print("Exiting the menu. Goodbye!")
@@ -379,12 +408,11 @@ Please select an option:
                 case _:
                     print("Invalid option. Please select a number between 1 and 5.")
 
-
         except ValueError:
             print("Invalid input. Please enter a valid number.")
-
-        except:
-            continue
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+            break
 
 def start_menu():
     print("Main_Menu:\n Please an option from 1-6:")
@@ -392,14 +420,15 @@ def start_menu():
         try:
             start_choice = int(input(
                 """
-1. User\n
-2. Budget\n
-3. Expense\n
-4. Deposits\n
-5. Categories\n
-6. Savings Goals\n
+1. User
+2. Budget
+3. Expense
+4. Deposits
+5. Categories
+6. Savings Goals
 7. Exit
-                """
+
+Your input: """
             ))
             match start_choice:
                 case 1:

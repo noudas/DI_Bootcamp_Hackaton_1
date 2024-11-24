@@ -21,6 +21,46 @@ class DB_Connect:
             print(f"Error while connecting to the database: {error}")
             return None
 
+    def execute_query(self, query, params=None):
+        try:
+            if not self.connection:
+                self.connect()
+
+            cursor = self.connection.cursor()
+            cursor.execute(query, params)
+            self.connection.commit()
+            print("Query executed successfully.")
+            return cursor.rowcount
+        except Exception as error:
+            print(f"Error while executing query: {error}")
+            self.connection.rollback()
+            raise error
+
+    def fetch_results(self, query, params=()):
+        try:
+            if not self.connection:
+                self.connect()
+
+            cursor = self.connection.cursor()
+            print(f"Attempting to execute query: {query} with params: {params}")  # Debug print
+            
+            cursor.execute(query, params)
+            
+            rows = cursor.fetchall()
+            column_names = [d[0] for d in cursor.description]
+            result = []
+            for row in rows:
+                result.append(dict(zip(column_names, row)))
+            
+            print(f"Fetched {len(rows)} rows")  # Debug print
+            
+            return result
+        except Exception as e:
+            print(f"Error fetching results: {e}")  # Debug print
+            raise
+        finally:
+            cursor.close()
+
     def disconnect(self):
         try:
             if self.connection:
@@ -30,39 +70,3 @@ class DB_Connect:
                 print("No active connection to disconnect.")
         except Exception as error:
             print(f"Error while disconnecting from the database: {error}")
-
-    def execute_query(self, query, params=None):
-        try:
-            connection = self.connect()
-            if not connection:
-                raise Exception("Failed to establish database connection")
-
-            cursor = connection.cursor()
-            cursor.execute(query, params)
-            connection.commit()
-            print("Query executed successfully.")
-            return cursor.rowcount
-        except Exception as error:
-            print(f"Error while executing query: {error}")
-            connection.rollback()
-            raise error
-
-    def fetch_results(self, query, params=None):
-        try:
-            connection = self.connect()
-            if not connection:
-                raise Exception("Failed to establish database connection")
-
-            cursor = connection.cursor()
-            cursor.execute(query, params)
-
-            if cursor.description:
-                result = cursor.fetchall()
-                print("Query executed successfully. Results fetched.")
-            else:
-                print("Query executed successfully. No results to fetch.")
-
-            return result
-        except Exception as error:
-            print(f"Error while fetching results: {error}")
-            raise error
