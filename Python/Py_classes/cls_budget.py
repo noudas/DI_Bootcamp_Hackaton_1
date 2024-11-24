@@ -30,7 +30,7 @@ class Budget:
         params = (self.user_id, self.total_budget, self.savings, self.spent_amount)
         self.db.execute_query(query, params)
 
-    def update_budget(self, new_total_budget=None, new_savings=None, new_spent_amount=None):
+    def update_budget(self, user_id, new_total_budget=None, new_savings=None, new_spent_amount=None):
         """
         Updates the budget values in the database using the execute_query method.
         
@@ -47,7 +47,7 @@ class Budget:
             SET total_budget = %s, savings = %s, spent_amount = %s, updated_at = CURRENT_TIMESTAMP
             WHERE user_id = %s
         """
-        params = (new_total_budget, new_savings, new_spent_amount, self.user_id)
+        params = (new_total_budget, new_savings, new_spent_amount, user_id)
         self.db.execute_query(query, params)
 
     @classmethod

@@ -4,20 +4,16 @@ import psycopg2
 import os
 import config
 
-
 db = DB_Connect(db_name=Config.DB_NAME)
 
-
-
-
 def user_menu():
-    print("User Menu:\n Please an option from 1-6:")
+    print("User Menu:\n Please an option from 1-4:")
     while True:
         try:
             start_choice=int(input(
                 """
                     1. Create new user\n
-                    2. Find user by id\n
+                    2. Find user by ID\n
                     3. Update existing user\n
                     4. Delete existing user\n
                 """
@@ -29,19 +25,22 @@ def user_menu():
                     new_last_name=input("Last name:\t")
                     new_email=input("Email:\t")
                     new_user_password=input("Password:\t")
-                    new_user=User(db: DB_Connect, new_username, new_first_name, new_last_name, new_email, new_user_password)
-                    new_user.User.create_user()
+                    new_user=User(db, new_username, new_first_name, new_last_name, new_email, new_user_password)
+                    new_user.create_user()
                 case 2:
                     user_id = int(input("Enter User ID"))
-                    User.get_user_by_id(db: DB_Connect, user_id)
+                    User.get_user_by_id(db, user_id)
                 case 3:
+                    curr_user_id = int(input("Enter user ID you wish to update"))
                     new_username= input("Enter new username (or leave blank to skip):\t")
                     new_email= input("Enter new email (or leave blank to skip):\t")
                     new_user_password= input("Enter new password (or leave blank to skip):\t")
-                    User.update_user( new_username=None, new_email=None, new_password=None)
+                    
+                    User.update_user(curr_user_id, new_username=None, new_email=None, new_password=None)
                 case 4:
-                    pass
-            # This block executes if value matches pattern4
+                    user_id = int(input("Enter User ID"))
+                    User.delete_user(db, user_id)
+                    
               
             
             raise Exception("Input must be between 1 and 4.")
@@ -62,14 +61,19 @@ def budget_menu():
                                     ))
             match start_choice:
                 case 1:
-                    pass
-            # This block executes if value matches pattern1
+                    user_id = int(input("Enter user id:\t"))
+                    total_budget = int(input("Enter total budget:\t"))
+                    savings = int(input("Enter amount you wish to save:\t"))
+                    spent_amount = int(input("Enter spent amount:\t"))
                 case 2:
-                    pass
-            # This block executes if value matches pattern2
+                    user_id = int(input("Enter user id:\t"))
+                    new_budget= int(input("Enter new budget total (or leave blank to skip):\t"))
+                    new_savings= int(input("Enter new savings amount (or leave blank to skip):\t"))
+                    new_spent= int(input("Enter new speant amount (or leave blank to skip):\t"))
+                    Budget.update_budget( user_id, new_total_budget=None, new_savings=None, new_spent_amount=None)
                 case 3:
-                    pass
-            # This block executes if value matches pattern3
+                    user_id = int(input("Enter User ID"))
+                    Budget.get_budget( db, user_id)
                
             raise Exception("Input must be between 1 and .")
         

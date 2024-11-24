@@ -54,7 +54,7 @@ class User:
             return cls(db, row[1], row[2], row[3], row[4], row[5])
         return None
 
-    def update_user(self, new_username=None, new_email=None, new_password=None):
+    def update_user(self, curr_user_id, new_username=None, new_email=None, new_password=None):
         """
         Updates user information in the database using the DB_Connect class.
         
@@ -71,7 +71,7 @@ class User:
             SET username = %s, email = %s, password = %s 
             WHERE username = %s
         """
-        params = (new_username, new_email, new_password, self.username)
+        params = (new_username, new_email, new_password, curr_user_id)
         self.db.execute_query(query, params)
 
     @classmethod
