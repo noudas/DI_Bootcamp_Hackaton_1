@@ -1,6 +1,6 @@
 import psycopg2
 from config import Config
-from cls_DB_connect import DB_Connect
+from Py_classes import DB_Connect
 
 class Budget:
     def __init__(self, db: DB_Connect, user_id, total_budget, savings=0.00, spent_amount=0.00):

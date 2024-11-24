@@ -1,6 +1,6 @@
 import psycopg2
 from config import Config
-from cls_DB_connect import DB_Connect
+from Py_classes import DB_Connect
 
 class Saving_Goals:
     def __init__(self, db: DB_Connect, user_id, goal_name, target_amount, current_amount, due_date):

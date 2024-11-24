@@ -1,6 +1,6 @@
 import psycopg2
 from config import Config
-from cls_DB_connect import DB_Connect
+from Py_classes import DB_Connect
 
 class User:
     """
