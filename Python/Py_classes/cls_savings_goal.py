@@ -42,7 +42,6 @@ class Saving_Goals:
         :param new_current_amount: The new current amount saved, if updating.
         :param new_due_date: The new due date, if updating.
         """
-        # Prepare updated values
         new_goal_name = new_goal_name if new_goal_name else self.goal_name
         new_target_amount = new_target_amount if new_target_amount else self.target_amount
         new_current_amount = new_current_amount if new_current_amount else self.current_amount
@@ -81,7 +80,6 @@ class Saving_Goals:
         params = (user_id,)
         results = db.fetch_results(query, params)
 
-        # If results are found, return a list of Saving_Goals objects
         if results:
             goals = []
             for row in results:

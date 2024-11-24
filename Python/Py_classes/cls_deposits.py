@@ -3,7 +3,7 @@ from config import Config
 from cls_DB_connect import DB_Connect
 
 class Deposits:
-    def __init__(self, db: DB_Connect, user_id, amount, deposit_date, description=None):  # Initializes a deposit object
+    def __init__(self, db: DB_Connect, user_id, amount, deposit_date, description=None):
         """
         Initializes a deposit with the provided parameters.
 
@@ -19,7 +19,7 @@ class Deposits:
         self.deposit_date = deposit_date
         self.description = description
 
-    def add_deposit(self):  # Inserts a new deposit record.
+    def add_deposit(self):
         """
         Adds a new deposit to the database.
         """
@@ -33,7 +33,7 @@ class Deposits:
             print(f"Error occurred while adding deposit: {error}")
 
     @classmethod
-    def get_deposits(cls, db: DB_Connect):  # Fetches all deposits.
+    def get_deposits(cls, db: DB_Connect):
         """
         Fetches all deposit records from the database.
 
@@ -48,7 +48,7 @@ class Deposits:
         return deposits
 
     @classmethod
-    def delete_deposit(cls, db: DB_Connect, deposit_id):  # Deletes a deposit record.
+    def delete_deposit(cls, db: DB_Connect, deposit_id):
         """
         Deletes a deposit record by its ID.
 

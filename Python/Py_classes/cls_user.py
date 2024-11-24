@@ -18,7 +18,7 @@ class User:
         :param email: The email address of the user.
         :param password: The password for the user.
         """
-        self.db = db  # Store the DB_Connect instance
+        self.db = db
         self.username = username
         self.first_name = first_name
         self.last_name = last_name
@@ -50,7 +50,7 @@ class User:
         results = db.fetch_results(query, params)
 
         if results:
-            row = results[0]  # Assuming user_id is unique, only one row should be returned
+            row = results[0]
             return cls(db, row[1], row[2], row[3], row[4], row[5])
         return None
 

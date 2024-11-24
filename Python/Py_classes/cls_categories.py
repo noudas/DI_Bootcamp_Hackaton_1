@@ -41,7 +41,6 @@ class Categories:
         query = "SELECT category_id, name, description FROM categories"
         results = db.fetch_results(query)
         
-        # Return a list of Categories objects
         categories = [cls(db, row[1], row[2]) for row in results]
         return categories
 

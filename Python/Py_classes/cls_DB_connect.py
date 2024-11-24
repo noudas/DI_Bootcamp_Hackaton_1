@@ -40,7 +40,7 @@ class DB_Connect:
         Disconnects from the PostgreSQL database if a connection exists.
         """
         try:
-            if self.connection:  # Check if the connection exists
+            if self.connection:
                 self.connection.close()
                 print(f"Disconnected from database: {self.db_name}")
             else:
@@ -84,7 +84,6 @@ class DB_Connect:
             cursor = connection.cursor()
             cursor.execute(query, params)
 
-            # Fetch results only if there is a result set (e.g., SELECT queries)
             if cursor.description:
                 result = cursor.fetchall()
                 print("Query executed successfully. Results fetched.")

@@ -64,7 +64,6 @@ class Budget:
         results = db.fetch_results(query, params)
 
         if results:
-            # Assuming the schema is: (budget_id, user_id, total_budget, savings, spent_amount, remaining_amount, created_at, updated_at)
-            row = results[0]  # Get the first result (only one row should be returned)
+            row = results[0] 
             return cls(db, row[1], row[2], row[3], row[4])
         return None

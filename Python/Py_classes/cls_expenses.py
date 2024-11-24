@@ -4,7 +4,7 @@ from cls_DB_connect import DB_Connect
 
 
 class Expenses:
-    def __init__(self, db: DB_Connect, amount, category_name, notes):  # Initializes an expense object.
+    def __init__(self, db: DB_Connect, amount, category_name, notes):
         """
         Initialize an expense with amount, category_name, and notes.
         
@@ -17,7 +17,7 @@ class Expenses:
         self.amount = amount
         self.category_name = category_name.lower()
         self.notes = notes
-        self.category_id = self.get_category_id(self.category_name)  # Fetch the category_id from the database
+        self.category_id = self.get_category_id(self.category_name)
 
     def get_category_id(self, category_name):
         """
@@ -28,9 +28,9 @@ class Expenses:
         """
         query = "SELECT category_id FROM categories WHERE LOWER(name) = %s"
         result = self.db.fetch_result(query, (category_name,))
-        return result[0] if result else None  # Returns category_id or None if not found
+        return result[0] if result else None
 
-    def add_expense(self):  # Inserts a new expense.
+    def add_expense(self):
         """
         Adds a new expense to the database.
         """
@@ -50,7 +50,7 @@ class Expenses:
             print(f"Error occurred while adding an expense: {error}")
 
     @classmethod
-    def get_expense_by_id(cls, db: DB_Connect, expense_id):  # Fetches an expense by ID.
+    def get_expense_by_id(cls, db: DB_Connect, expense_id):
         """
         Fetches an expense by its ID.
         
@@ -60,10 +60,10 @@ class Expenses:
         """
         query = "SELECT * FROM expenses WHERE expense_id = %s"
         result = db.fetch_result(query, (expense_id,))
-        return result  # Returns the expense record as a tuple or None if not found
+        return result
 
     @classmethod    
-    def get_expenses_by_category(cls, db: DB_Connect, category_id):  # Fetches expenses for a specific category.
+    def get_expenses_by_category(cls, db: DB_Connect, category_id):
         """
         Fetches all expenses for a specific category.
         
@@ -73,10 +73,10 @@ class Expenses:
         """
         query = "SELECT * FROM expenses WHERE category_id = %s"
         results = db.fetch_results(query, (category_id,))
-        return results  # Returns the list of expenses in the specified category
+        return results
 
     @classmethod
-    def delete_expense(cls, db: DB_Connect, expense_id):  # Deletes an expense.
+    def delete_expense(cls, db: DB_Connect, expense_id):
         """
         Deletes an expense from the database.
         
