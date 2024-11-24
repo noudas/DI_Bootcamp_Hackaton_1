@@ -80,48 +80,66 @@ def user_menu():
             print("Invalid input. Please enter a number between 1 and 4.")
 
 def budget_menu():
-    print("Budget Menu:\nPlease an option from 1-6:")
+    print("Budget Menu:\nPlease select an option from 1-6:")
     while True:
         try:
-            budget_choice = int(input(
-"""
+            budget_choice = int(input("""
 1. Create new budget
 2. Update existing budget
 3. Find existing budget
 4. Exit
 
-Your input: """
-            ))
+Your input: """))
+            
             match budget_choice:
                 case 1:  # create new budget
-                    user_id = int(input("Enter user id:\t"))
-                    total_budget = int(input("Enter total budget:\t"))
-                    savings = int(input("Enter amount you wish to save:\t"))
-                    spent_amount = int(input("Enter spent amount:\t"))
-                    new_budget = Budget(
-                        db, user_id, total_budget, savings, spent_amount)
+                    user_id = int(input("Enter user id: "))
+                    total_budget = float(input("Enter total budget: "))
+                    savings = float(input("Enter amount you wish to save: "))
+                    spent_amount = float(input("Enter spent amount: "))
+                    new_budget = Budget(db, user_id, total_budget, savings, spent_amount)
                     new_budget.create_budget()
-                case 2:  # Not Working
-                    user_id = int(input("Enter user id:\t"))
-                    new_budget = int(
-                        input("Enter new budget total (or leave blank to skip):\t"))
-                    new_savings = int(
-                        input("Enter new savings amount (or leave blank to skip):\t"))
-                    new_spent = int(
-                        input("Enter new speant amount (or leave blank to skip):\t"))
-                    Budget.update_budget(
-                        user_id, new_total_budget=None, new_savings=None, new_spent_amount=None)
-                case 3:  # Find existing budget
-                    user_id = int(input("Enter User ID"))
-                    Budget.get_budget(db, user_id)
+                
+                case 2:  # update existing budget
+                    user_id = int(input("Enter user id: "))
+                    new_total_budget = float(
+                        input("Enter new budget total (or leave blank to skip): ") or None)
+                    new_savings = float(
+                        input("Enter new savings amount (or leave blank to skip): ") or None)
+                    new_spent = float(
+                        input("Enter new spent amount (or leave blank to skip): ") or None)
+                    
+                    budget = Budget.get_budget(db, user_id)
+                    if budget:
+                        budget.update_budget(user_id, new_total_budget, new_savings, new_spent)
+                    else:
+                        print("No budget found for this user.")
+                
+                case 3:  # find existing budget
+                    user_id = int(input("Enter User ID: "))
+                    budget = Budget.get_budget(db, user_id)
+                    
+                    if budget:
+                        print("\nBudget Information:")
+                        print(f"User ID: {budget.user_id}")
+                        print(f"Total Budget: ${budget.total_budget:.2f}")
+                        print(f"Savings: ${budget.savings:.2f}")
+                        print(f"Spent Amount: ${budget.spent_amount:.2f}")
+                        print(f"Remaining Amount: ${budget.remaining_amount:.2f}")
+                    else:
+                        print("No budget found for this user.")
+                
                 case 4:
                     print("Exiting the menu. Goodbye!")
                     break
-
-            raise Exception("Input must be between 1 and 4")
-
-        except:
-            continue
+                
+                case _:
+                    print("Invalid choice. Please try again.")
+            
+        except ValueError as ve:
+            print(f"An error occurred: {ve}")
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
 
 def deposits_menu():
     print("Deposits Menu:\n Please an option from 1-3:")

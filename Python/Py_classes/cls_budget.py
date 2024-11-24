@@ -57,13 +57,20 @@ class Budget:
         
         :param db: An instance of the DB_Connect class.
         :param user_id: The ID of the user whose budget is to be fetched.
-        :return: An instance of Budget if the budget is found, None otherwise.
+        :return: A Budget object if the budget is found, None otherwise.
         """
         query = "SELECT * FROM budget WHERE user_id = %s"
         params = (user_id,)
         results = db.fetch_results(query, params)
 
         if results:
-            row = results[0] 
-            return cls(db, row[1], row[2], row[3], row[4])
+            row = results[0]
+            return cls(db, row['user_id'], row['total_budget'], row['savings'], row['spent_amount'])
         return None
+
+    @property
+    def remaining_amount(self):
+        """
+        Calculates the remaining amount based on total_budget and spent_amount.
+        """
+        return self.total_budget - self.spent_amount
