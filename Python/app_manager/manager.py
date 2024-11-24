@@ -155,39 +155,100 @@ def expenses_menu():
 
         except:
             continue
-
-
+        
 def categories_menu():
-    print("Categories Menu:\n Please an option from 1-4:")
+    """
+    Displays a menu for managing categories and executes the selected option.
+    """
+
     while True:
         try:
-            categories_choice = int(input(
-                """
-                    1. Add new category \n
-                    2. Show all categories\n
-                    3. Update Existing category\n
-                    4. Delete category\n
-                """
-            ))
+            print("""
+Categories Menu:
+1. Add new category
+2. Show all categories
+3. Update existing category
+4. Delete category
+5. Exit
+            """)
+            categories_choice = int(input("Please select an option: "))
+
             match categories_choice:
                 case 1:
-                    pass
-            # This block executes if value matches pattern1
+                    # Add a new category
+                    name = input("Enter the name of the category: ")
+                    description = input("Enter the description of the category (optional): ")
+
+                    Categories.create_category(db, name, description)
+                    print("Category added successfully!")
+
                 case 2:
-                    pass
-            # This block executes if value matches pattern2
+                    # Show all categories
+                    categories = Categories.get_all_categories(db)
+                    if categories:
+                        print(f"\nYou have {len(categories)} category(ies):")
+                        for idx, category in enumerate(categories, 1):
+                            print(f"{idx}. {category['name']} - {category['description']}")
+                    else:
+                        print("No categories found.")
+
                 case 3:
-                    pass
-            # This block executes if value matches pattern3
+                    # Update an existing category
+                    categories = Categories.get_all_categories(db)
+                    if not categories:
+                        print("No categories found to update.")
+                        continue
+
+                    print("Select a category to update:")
+                    for idx, category in enumerate(categories, 1):
+                        print(f"{idx}. {category['name']}")
+
+                    category_choice = int(input("Enter the number of the category to update: ")) - 1
+                    if category_choice < 0 or category_choice >= len(categories):
+                        print("Invalid choice. Please try again.")
+                        continue
+
+                    selected_category = categories[category_choice]
+                    print(f"Updating category: {selected_category['name']}")
+
+                    new_name = input(f"Enter new name (current: {selected_category['name']}): ") or selected_category['name']
+                    new_description = input(f"Enter new description (current: {selected_category['description']}): ") or selected_category['description']
+
+                    Categories.update_category(db, selected_category['category_id'], new_name, new_description)
+                    print("Category updated successfully!")
+
                 case 4:
-                    pass
-            # This block executes if value matches pattern4
+                    # Delete a category
+                    categories = Categories.get_all_categories(db)
+                    if not categories:
+                        print("No categories found to delete.")
+                        continue
 
-            raise Exception("Input must be between 1 and 4.")
+                    print("Select a category to delete:")
+                    for idx, category in enumerate(categories, 1):
+                        print(f"{idx}. {category['name']}")
 
-        except:
-            continue
+                    category_choice = int(input("Enter the number of the category to delete: ")) - 1
+                    if category_choice < 0 or category_choice >= len(categories):
+                        print("Invalid choice. Please try again.")
+                        continue
 
+                    selected_category = categories[category_choice]
+                    Categories.delete_category(db, selected_category['category_id'])
+                    print(f"Category '{selected_category['name']}' deleted successfully!")
+
+                case 5:
+                    # Exit the menu
+                    print("Exiting the menu. Goodbye!")
+                    break
+
+                case _:
+                    print("Invalid option. Please select a number between 1 and 5.")
+
+        except ValueError:
+            print("Invalid input. Please enter a valid number.")
+        except Exception as e:
+            print(f"An error occurred: {e}")
 
 def saving_menu():
     print("Deposits Menu:\n Please an option from 1-3:")
@@ -195,24 +256,103 @@ def saving_menu():
         try:
             start_choice = int(input(
                 """
-                    1. User\n
-                    2. Budget\n
-                    3. Expense\n
+Savings Goals Menu:
+Please select an option:
+1. Create a new savings goal
+2. View all savings goals
+3. Update a savings goal
+4. Delete a savings goal
+5. Exit
                   
                 """
             ))
             match start_choice:
                 case 1:
-                    pass
-            # This block executes if value matches pattern1
-                case 2:
-                    pass
-            # This block executes if value matches pattern2
-                case 3:
-                    pass
-            # This block executes if value matches pattern3
+                    user_id = int(input("Enter your user ID: "))
+                    goal_name = input("Enter the name of the savings goal: ")
+                    target_amount = float(input("Enter the target amount: "))
+                    current_amount = float(input("Enter the current amount saved: "))
+                    due_date = input("Enter the due date (YYYY-MM-DD): ")
 
-            raise Exception("Input must be between 1 and 3.")
+                    goal = Saving_Goals(db, user_id, goal_name, target_amount, current_amount, due_date)
+                    goal.create_goal()
+                    print("Savings goal created successfully!")
+                
+                case 2:
+                    user_id = int(input("Enter your user ID to view goals: "))
+                    goals = Saving_Goals.get_goals(db, user_id)
+                    if goals:
+                        print(f"\nYou have {len(goals)} savings goal(s):")
+                        for idx, goal in enumerate(goals, 1):
+                            print(f"{idx}. {goal.goal_name} - Target: ${goal.target_amount}, "
+                                  f"Saved: ${goal.current_amount}, Due: {goal.due_date}")
+                    else:
+                        print("No savings goals found.")
+                
+                case 3:
+                    user_id = int(input("Enter your user ID: "))
+                    goals = Saving_Goals.get_goals(db, user_id)
+                    if not goals:
+                        print("No savings goals found to update.")
+                        continue
+                    
+                    print("Select a goal to update:")
+                    for idx, goal in enumerate(goals, 1):
+                        print(f"{idx}. {goal.goal_name}")
+                    
+                    goal_choice = int(input("Enter the number of the goal to update: ")) - 1
+                    if goal_choice < 0 or goal_choice >= len(goals):
+                        print("Invalid choice. Please try again.")
+                        continue
+
+                    selected_goal = goals[goal_choice]
+                    print(f"Updating goal: {selected_goal.goal_name}")
+
+                    new_goal_name = input(f"Enter new name (current: {selected_goal.goal_name}): ") or selected_goal.goal_name
+                    new_target_amount = input(f"Enter new target amount (current: {selected_goal.target_amount}): ") or selected_goal.target_amount
+                    new_current_amount = input(f"Enter new current amount (current: {selected_goal.current_amount}): ") or selected_goal.current_amount
+                    new_due_date = input(f"Enter new due date (current: {selected_goal.due_date}): ") or selected_goal.due_date
+
+                    selected_goal.update_goal(
+                        goal_id=selected_goal.goal_id,
+                        new_goal_name=new_goal_name,
+                        new_target_amount=float(new_target_amount),
+                        new_current_amount=float(new_current_amount),
+                        new_due_date=new_due_date
+                    )
+                    print("Savings goal updated successfully!")
+                
+                case 4:
+                    # Delete a savings goal
+                    user_id = int(input("Enter your user ID: "))
+                    goals = Saving_Goals.get_goals(db, user_id)
+                    if not goals:
+                        print("No savings goals found to delete.")
+                        continue
+                    
+                    print("Select a goal to delete:")
+                    for idx, goal in enumerate(goals, 1):
+                        print(f"{idx}. {goal.goal_name}")
+                    
+                    goal_choice = int(input("Enter the number of the goal to delete: ")) - 1
+                    if goal_choice < 0 or goal_choice >= len(goals):
+                        print("Invalid choice. Please try again.")
+                        continue
+
+                    selected_goal = goals[goal_choice]
+                    Saving_Goals.delete_goal(db, selected_goal.goal_id)
+                    print(f"Savings goal '{selected_goal.goal_name}' deleted successfully!")
+
+                case 5:
+                    print("Exiting the menu. Goodbye!")
+                    break
+
+                case _:
+                    print("Invalid option. Please select a number between 1 and 5.")
+
+
+        except ValueError:
+            print("Invalid input. Please enter a valid number.")
 
         except:
             continue
@@ -234,25 +374,20 @@ def start_menu():
             ))
             match start_choice:
                 case 1:
-                    pass
-            # This block executes if value matches pattern1
+                    user_menu()
                 case 2:
-                    pass
-            # This block executes if value matches pattern2
+                    budget_menu()
                 case 3:
-                    pass
-            # This block executes if value matches pattern3
+                    expenses_menu()
                 case 4:
-                    pass
-            # This block executes if value matches pattern4
+                    deposits_menu()
                 case 5:
-                    pass
-            # This block executes if value matches pattern5
+                    categories_menu()
                 case 6:
-                    pass
-            # This block executes if value matches pattern6
-
+                    saving_menu()
+            
             raise Exception("Input must be between 1 and 6.")
 
         except:
             continue
+        
