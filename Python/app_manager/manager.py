@@ -196,11 +196,10 @@ def expenses_menu():
     while True:
         try:
             exp_choice = int(input(
-                """
-1. Add new Expense\n
-2. Find expense by id\n
-3. Find expenses by category\n
-4. Exit
+"""
+1. Add new Expense
+2. Find expense by id
+3. Exit
 """
             ))
             match exp_choice:
@@ -236,20 +235,7 @@ def expenses_menu():
                     else:
                         print("No expense found with the given ID.")
 
-
-                case 3:  # Find expenses by category
-                    category_name = input("Enter category name: ").lower().strip()
-                    expenses = Expenses.get_expenses_by_category(db, category_name)
-                    if expenses:
-                        print("\nExpenses in this category:")
-                        for expense in expenses:
-                            print(f"\nID: {expense.expense_id}")
-                            print(f"Amount: ${expense.amount:.2f}")
-                            print(f"Category: {expense.category_name}")
-                            print(f"Notes: {expense.notes}")
-                    else:
-                        print("No expenses found in this category.")
-                case 4:
+                case 3:
                     print("Exiting the menu. Goodbye!")
                     break
                 case _:

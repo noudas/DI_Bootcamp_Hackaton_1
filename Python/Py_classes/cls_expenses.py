@@ -66,19 +66,6 @@ class Expenses:
         query = "SELECT * FROM expenses WHERE expense_id = %s"
         result = db.fetch_results(query, (expense_id,))
         return result
-
-    @classmethod    
-    def get_expenses_by_category(cls, db: DB_Connect, category_name):
-        """
-        Fetches all expenses for a specific category.
-        
-        :param db: An instance of DB_Connect for interacting with the database.
-        :param category_name: The name of the category for which to fetch expenses.
-        :return: A list of expenses in the specified category.
-        """
-        query = "SELECT * FROM expenses WHERE category_name = %s"
-        results = db.fetch_results(query, (category_name,))
-        return results
     
     
 
