@@ -4,7 +4,7 @@ from Py_classes import DB_Connect
 
 
 class Expenses:
-    def __init__(self, db: DB_Connect, amount, category_name, notes):
+    def __init__(self, db: DB_Connect, amount, category_name, notes= None):
         """
         Initialize an expense with amount, category_name, and notes.
         

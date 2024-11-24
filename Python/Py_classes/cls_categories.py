@@ -7,10 +7,16 @@ class Categories:
 
     @classmethod
     def get_all_categories(cls, db):
-        query = "SELECT category_id, name, description FROM categories"
-        results = db.fetch_results(query)
-        
-        return [cls(db, row[1], row[2]) for row in results]
+        try:
+            query = "SELECT category_id, name, description FROM categories"
+            results = db.fetch_results(query)
+            
+            print(f"Debug: Raw results from database: {results}") 
+            
+            return [cls(db, row['name'], row['description']) for row in results] if results else []
+        except Exception as e:
+            print(f"Error fetching categories: {e}")
+            return []
 
     @classmethod
     def create_category(cls, db, name, description=None):

@@ -191,8 +191,8 @@ Deposits Menu:
         except Exception as error:
             print(f"An error occurred: {error}")
 
-def expenses_menu():
-    print("Expenses Menu:\n Please an option from 1-4:")
+def expenses_menu(): # BORKEN
+    print("Expenses Menu:\n Please select an option from 1-4:")
     while True:
         try:
             exp_choice = int(input(
@@ -201,30 +201,49 @@ def expenses_menu():
 2. Find expense by id\n
 3. Find expenses by category\n
 4. Exit
-                """
+"""
             ))
             match exp_choice:
-                case 1:#Add new Expense
-                    amount = int(input("Enter deposit amount:\t"))
-                    category_name = input("Description of deposit:\t")
-                    notes = int(input("Enter notes:\t"))
-                    new_exp = Expenses( amount, category_name, notes)
+                case 1:  # Add new Expense
+                    amount = float(input("Enter deposit amount: "))
+                    category_name = input("Description of deposit: ").lower().strip()
+                    notes = input("Enter notes: ")
+                    new_exp = Expenses(amount, category_name, notes)
                     new_exp.add_expense()
-                case 2:#Find expense by id
-                    expense_id = int(input("Enter expense id:\t"))
-                    Expenses.get_expense_by_id( db, expense_id)
-                case 3:#Find expenses by category
-                    category_name = int(input("Enter expense id:\t"))
-                    Expenses.get_expenses_by_category(db, category_name)
+                case 2:  # Find expense by id
+                    expense_id = int(input("Enter expense id: "))
+                    expense = Expenses.get_expense_by_id(db, expense_id)
+                    if expense:
+                        print("\nExpense Information:")
+                        print(f"ID: {expense.expense_id}")
+                        print(f"Amount: ${expense.amount:.2f}")
+                        print(f"Category: {expense.category_name}")
+                        print(f"Notes: {expense.notes}")
+                    else:
+                        print("No expense found with the given ID.")
+                case 3:  # Find expenses by category
+                    category_name = input("Enter category name: ").lower().strip()
+                    expenses = Expenses.get_expenses_by_category(db, category_name)
+                    if expenses:
+                        print("\nExpenses in this category:")
+                        for expense in expenses:
+                            print(f"\nID: {expense.expense_id}")
+                            print(f"Amount: ${expense.amount:.2f}")
+                            print(f"Category: {expense.category_name}")
+                            print(f"Notes: {expense.notes}")
+                    else:
+                        print("No expenses found in this category.")
                 case 4:
                     print("Exiting the menu. Goodbye!")
                     break
+                case _:
+                    print("Invalid choice. Please try again.")
 
-            raise Exception("Input must be between 1 and 4.")
+        except ValueError as ve:
+            print(f"An error occurred: {ve}")
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
 
-        except:
-            continue
-        
 def categories_menu():
     """
     Displays a menu for managing categories and executes the selected option.
@@ -238,14 +257,14 @@ Categories Menu:
 3. Update existing category
 4. Delete category
 5. Exit
-            """)
+""")
             categories_choice = int(input("Please select an option: "))
 
             match categories_choice:
                 case 1:
                     # Add a new category
-                    name = input("Enter the name of the category: ")
-                    description = input("Enter the description of the category (optional): ")
+                    name = input("Enter the name of the category: ").strip()
+                    description = input("Enter the description of the category (optional): ").strip()
 
                     Categories.create_category(db, name, description)
                     print("Category added successfully!")
@@ -253,10 +272,12 @@ Categories Menu:
                 case 2:
                     # Show all categories
                     categories = Categories.get_all_categories(db)
+                    print(f"\nDebug: Number of categories fetched: {len(categories)}")
+                    
                     if categories:
-                        print(f"\nYou have {len(categories)} category{'s' if len(categories) > 1 else ''}:")
+                        print(f"You have {len(categories)} category{'s' if len(categories) > 1 else ''}:")
                         for idx, category in enumerate(categories, 1):
-                            print(f"{idx}. Name: {category.name}, Description: {category.description}")
+                            print(f"{idx}. Name: {category.name}, Description: {category.description5}")
                     else:
                         print("No categories found.")
 
@@ -279,8 +300,8 @@ Categories Menu:
                     selected_category = categories[category_choice]
                     print(f"Updating category: {selected_category.name}")
 
-                    new_name = input(f"Enter new name (current: {selected_category.name}): ") or selected_category.name
-                    new_description = input(f"Enter new description (current: {selected_category.description}): ") or selected_category.description
+                    new_name = input(f"Enter new name (current: {selected_category.name}): ").strip() or selected_category.name
+                    new_description = input(f"Enter new description (current: {selected_category.description}): ").strip() or selected_category.description
 
                     Categories.update_category(db, selected_category.name, new_name, new_description)
                     print("Category updated successfully!")
