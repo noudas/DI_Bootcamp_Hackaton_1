@@ -13,10 +13,10 @@ def user_menu():
         try:
             user_choice = int(input(
                 """
-                    1. Create new user\n
-                    2. Find user by ID\n
-                    3. Update existing user\n
-                    4. Delete existing user\n
+1. Create new user\n
+2. Find user by ID\n
+3. Update existing user\n
+4. Delete existing user\n
                 """
             ))
             match user_choice:
@@ -59,9 +59,9 @@ def budget_menu():
         try:
             budget_choice = int(input(
                 """
-                    1. Create new budget\n
-                    2. Update existing budget\n
-                    3. Find existing budget\n
+1. Create new budget\n
+2. Update existing budget\n
+3. Find existing budget\n
                 """
             ))
             match budget_choice:
@@ -99,9 +99,9 @@ def deposits_menu():
         try:
             dep_choice = int(input(
                 """
-                    1. Add new deposit\n
-                    2. Show all deposits\n
-                    3. Delete deposit\n
+1. Add new deposit\n
+2. Show all deposits\n
+3. Delete deposit\n
                 """
             ))
             match dep_choice:
@@ -132,9 +132,9 @@ def expenses_menu():
         try:
             exp_choice = int(input(
                 """
-                    1. Add new Expense\n
-                    2. Find expense by id\n
-                    3. Find expenses by category\n
+1. Add new Expense\n
+2. Find expense by id\n
+3. Find expenses by category\n
                 """
             ))
             match exp_choice:
