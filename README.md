@@ -68,13 +68,11 @@ The DB folder contains all the scripts necessary to set up and manage the databa
 
     - DB_insert_helper.py: Helper functions for database inserts.
     - DB_inserts.py: Script for bulk inserts into the database.
-
-    * Test files for specific inserts:
-    - test_insert_budget.py
-    - test_insert_categories.py
-    - test_insert_deposits.py
-    - test_insert_expenses.py
-    - test_insert_users.py
+    - test_insert_budget.py: Tests specific inserts into the Budget table
+    - test_insert_categories.py: Tests specific inserts into the Categories table
+    - test_insert_deposits.py: Tests specific inserts into the Deposits table
+    - test_insert_expenses.py: Tests specific inserts into the Expebses table
+    - test_insert_users.py: Tests specific inserts into the Users table
 
 * DB_tables
 
