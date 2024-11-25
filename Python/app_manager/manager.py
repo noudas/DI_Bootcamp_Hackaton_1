@@ -5,7 +5,7 @@ import os
 # Add the parent directory of Py_classes to the Python path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from Py_classes import DB_Connect, User, Budget, Deposits, Expenses, Categories, Saving_Goals
+from Py_classes import DB_Connect, User, Budget, Deposits, Expenses, Categories
 from config import Config
 
 db = DB_Connect(db_name=Config.DB_NAME)
