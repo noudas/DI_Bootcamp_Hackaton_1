@@ -49,8 +49,10 @@ pip install -r requirements.txt
 
 Required packages:
 
-psycopg2==2.9.10
+```bash
+psycopg2==2.9.10 and
 python-dotenv==1.0.1
+```
 
 3. Set up your PostgreSQL database using the .env configuration file.
 
