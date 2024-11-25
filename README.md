@@ -50,7 +50,7 @@ pip install -r requirements.txt
 Required packages:
 
 ```bash
-psycopg2==2.9.10 and
+psycopg2==2.9.10
 python-dotenv==1.0.1
 ```
 
