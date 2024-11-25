@@ -36,13 +36,13 @@ Ensure you have the following installed on your system:
 
 ## Installation
 
-Navigate to the project directory:
+1. Navigate to the project directory:
 
 ```bash
 cd DI_Bootcamp_Hackaton_1
 ```
 
-Install the required Python packages using pip:
+2. Install the required Python packages using pip:
 ```bash
 pip install -r requirements.txt
 Required packages:
@@ -51,7 +51,7 @@ psycopg2==2.9.10
 python-dotenv==1.0.1
 ```
 
-Set up your PostgreSQL database using the .env configuration file.
+3. Set up your PostgreSQL database using the .env configuration file.
 
 
 # Project Structure
