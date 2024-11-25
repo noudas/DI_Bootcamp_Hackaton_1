@@ -68,7 +68,8 @@ The DB folder contains all the scripts necessary to set up and manage the databa
 
     - DB_insert_helper.py: Helper functions for database inserts.
     - DB_inserts.py: Script for bulk inserts into the database.
-    - Test files for specific inserts:
+
+    * Test files for specific inserts:
     - test_insert_budget.py
     - test_insert_categories.py
     - test_insert_deposits.py
@@ -139,9 +140,17 @@ DB_PORT=5432
 Replace yourpassword with the appropriate password for your PostgreSQL instance.
 
 ## Usage
+To set up and test the project, follow these steps:
+
+Run tests.py in the DB folder to create the database, tables, and test inserts:
 
 ```bash
 python tests.py
 ```
 
-The tests.py will create the DB, Tables and test the inserts
+Run manager.py in the Python folder to run the program:
+
+```bash
+python ./app_manager/manager.py
+```
+
