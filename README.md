@@ -89,3 +89,26 @@ The DB folder contains all the scripts necessary to set up and manage the databa
     - .env: Environment configuration file.
     - config.py: General configuration file.
     - tests.py: Contains test cases for the project.
+
+## Environment Setup
+
+Create a .env file in the project root directory with the following content:
+
+```bash
+DB_NAME_DEFAULT=postgres
+DB_NAME=Hackaton_1
+DB_USER=postgres
+DB_PASSWORD=yourpassword
+DB_HOST=localhost
+DB_PORT=5432
+```
+
+Replace yourpassword with the appropriate password for your PostgreSQL instance.
+
+## Usage
+
+```bash
+python tests.py
+```
+
+The tests.py will create the DB, Tables and test the inserts
