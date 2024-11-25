@@ -45,11 +45,12 @@ cd DI_Bootcamp_Hackaton_1
 2. Install the required Python packages using pip:
 ```bash
 pip install -r requirements.txt
+```
+
 Required packages:
 
 psycopg2==2.9.10
 python-dotenv==1.0.1
-```
 
 3. Set up your PostgreSQL database using the .env configuration file.
 
