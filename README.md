@@ -33,3 +33,59 @@ Ensure you have the following installed on your system:
 
 * Python 3.x
 * PostgreSQL
+
+## Installation
+
+Navigate to the project directory:
+
+```bash
+cd DI_Bootcamp_Hackaton_1
+Install the required Python packages using pip:
+```
+
+```bash
+pip install -r requirements.txt
+Required packages:
+
+psycopg2==2.9.10
+python-dotenv==1.0.1
+```
+
+Set up your PostgreSQL database using the .env configuration file.
+
+
+# Project Structure
+## DB Folder
+
+The DB folder contains all the scripts necessary to set up and manage the database.
+
+* DB_config
+
+    - DB_connect.py: Handles database connection.
+    - DB_create.py: Creates the database.
+
+* DB_Insert_tests
+
+    - DB_insert_helper.py: Helper functions for database inserts.
+    - DB_inserts.py: Script for bulk inserts into the database.
+    - Test files for specific inserts:
+    - test_insert_budget.py
+    - test_insert_categories.py
+    - test_insert_deposits.py
+    - test_insert_expenses.py
+    - test_insert_users.py
+
+* DB_tables
+
+    - DB_budget_table.py: Budget table schema.
+    - DB_categories_table.py: Categories table schema.
+    - DB_deposits_table.py: Deposits table schema.
+    - DB_expenses_table.py: Expenses table schema.
+    - DB_initializer.py: Initializes all database tables.
+    - DB_user_table.py: User table schema.
+
+* Additional files:
+
+    - .env: Environment configuration file.
+    - config.py: General configuration file.
+    - tests.py: Contains test cases for the project.
