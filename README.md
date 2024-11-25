@@ -90,6 +90,39 @@ The DB folder contains all the scripts necessary to set up and manage the databa
     - config.py: General configuration file.
     - tests.py: Contains test cases for the project.
 
+
+
+## Python Folder
+The Python folder contains the core application logic, class definitions, and configuration scripts.
+
+* app_manager
+    - manager.py: The main script to manage application workflows.
+
+* Cls_Tests
+
+    - test_categories.py: Unit tests for the cls_categories.py module.
+    - test_user.py: Unit tests for the cls_user.py module.
+    - test.py: Centralized test script to run all tests.
+
+* Py_classes
+    - __init__.py: Initializes the Python class package.
+    - cls_budget.py: Defines the Budget class for budget-related operations.
+    - cls_categories.py: Defines the Categories class to manage categories.
+    - cls_DB_connect.py: Handles database connectivity for Python classes.
+    - cls_deposits.py: Defines the Deposits class for deposit-related operations.
+    - cls_expenses.py: Defines the Expenses class to manage expenses.
+    - cls_user.py: Defines the User class to manage user data and operations.
+
+* Py_config
+    - Py_connect.py: Manages configuration settings for connecting to the database.
+
+* Additional files:
+
+    - .env: Environment configuration file.
+    - config.py: General configuration file.
+    - test.py: Contains tests for the Python modules.
+
+
 ## Environment Setup
 
 Create a .env file in the project root directory with the following content:
